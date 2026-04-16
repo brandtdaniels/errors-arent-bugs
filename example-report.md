@@ -210,9 +210,11 @@ Add remote error reporting (Sentry, Crashlytics, or whatever platform the rest o
 ```swift
 } catch {
     storeLogging.assertion("Failed to read OfflineMaps from storage: \(error)")
-    ErrorReporter.capture(error, context: "OfflineMapStore.readAllOfflineMaps")
+    errorReporter.capture(error, context: "OfflineMapStore.readAllOfflineMaps")
 }
 ```
+
+The error reporter should be injected as a dependency (protocol/interface), not called as a static method. A static `ErrorReporter.capture()` reproduces the same design problems as other static loggers: tight coupling and untestability.
 
 ---
 
